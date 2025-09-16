@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Amor ♡MyE♡</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000; /* Fondo negro */
+    overflow: hidden;
+    height: 100%;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let drops = [];
+  const totalDrops = 200;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initDrops();
+  }
+
+  function initDrops() {
+    drops = [];
+    for (let i = 0; i < totalDrops; i++) {
+      drops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speed: 1 + Math.random() * 2, // velocidades más variadas
+        size: 14 + Math.random() * 14, // tamaños variados
+        drift: Math.random() * 2, // oscilación lateral
+        phase: Math.random() * Math.PI * 2 // fase inicial
+      });
+    }
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; // Fondo con transparencia
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#FF1493';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (let d of drops) {
+      ctx.font = `${d.size}px Arial`;
+      let x = d.x + Math.sin(d.phase) * 20; // oscilación lateral
+      ctx.globalAlpha = 0.6 + Math.random() * 0.4; // brillo aleatorio
+      ctx.fillText('Te quiero', x, d.y);
+
+      d.y += d.speed;
+      d.phase += d.drift * 0.02; // actualiza oscilación
+
+      if (d.y > canvas.height + 40) {
+        d.y = -40;
+        d.x = Math.random() * canvas.width;
+      }
+    }
+    ctx.globalAlpha = 1; // restaurar opacidad
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+
+  function showAlert() {
+    alert('Edu y Mari♡');
+  }
+  document.addEventListener('click', showAlert);
+  document.addEventListener('touchstart', showAlert);
+</script>
+</body>
+</html>
